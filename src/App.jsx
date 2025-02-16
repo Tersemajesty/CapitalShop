@@ -2,7 +2,7 @@ import "./App.css"
 import Body from "./component/Body/Body"
 import HomeRoute from "./Route/HomeRoute";
 import Home from "./Pages/Home"
-import { Outlet, RouterProvider, createBrowserRouter, useNavigation } from "react-router-dom"
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import ProductPage from "./Pages/ProductPage"
 import Signup from "./Pages/Signup"
 import Login from "./Pages/Login"
@@ -16,39 +16,33 @@ import { useState, useEffect } from "react";
 import Loader from "./component/Loader/loading";
 // import PrivateRoute from "./Route/PrivateRoute";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomeRoute />,
 
-const PageLoader = ()=> {
-  const navigation = useNavigation()
+    children: [
+      { path: "home", element: <Home /> },
+      { path: "productpage", element: <ProductPage /> },
+      { path: "blog", element: <Blog /> },
+      { path: "pages", element: <Pages /> },
+      { path: "user", element: <User /> },
+      { path: "categories", element: <Categories /> },
+      { path: "contact", element: <Contact /> },
+      { path: "body", element: <Body /> },
+      { path: "cart", element: <Cart /> },
+    ],
+  },
+  { path: "/login", element: <Login /> },
+  { path: "/signup", element: <Signup /> },
+]);
 
-  const isPageLoading = navigation.state === "loading"
-
-  return isPageLoading ? <Loader /> : <Outlet />
-}
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(()=> {
-    setTimeout(()=> setIsLoading(false), 1000)
-  }, [])
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <HomeRoute />,
-      children: [
-        { path: "productpage", element: <PageLoader />, children: [{ path: "", element: <ProductPage /> }] },
-        { path: "home", element: <PageLoader />, children: [{ path: "", element: <Home /> }] },
-        { path: "blog", element: <PageLoader />, children: [{ path: "", element: <Blog /> }] },
-        { path: "pages", element: <PageLoader />, children: [{ path: "", element: <Pages /> }] },
-        { path: "user", element: <PageLoader />, children: [{ path: "", element: <User /> }] },
-        { path: "categories", element: <PageLoader />, children: [{ path: "", element: <Categories /> }] },
-        { path: "contact", element: <PageLoader />, children: [{ path: "", element: <Contact /> }] },
-        { path: "body", element: <PageLoader />, children: [{ path: "", element: <Body /> }] },
-        { path: "cart", element: <PageLoader />, children: [{ path: "", element: <Cart /> }] },
-      ],
-    },
-    { path: "/login", element: <PageLoader />, children: [{ path: "", element: <Login /> }] },
-    { path: "/signup", element: <PageLoader />, children: [{ path: "", element: <Signup /> }] },
-  ]);
+  useEffect(() => {
+    setTimeout(() => setIsLoading(false), 2000); 
+  }, []);
     
     return isLoading ? <Loader /> : <RouterProvider router={router}/>
 }
