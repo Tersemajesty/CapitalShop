@@ -2,7 +2,7 @@ import "./App.css"
 import Body from "./component/Body/Body"
 import HomeRoute from "./Route/HomeRoute";
 import Home from "./Pages/Home"
-import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import { Outlet, RouterProvider, createBrowserRouter, useNavigation } from "react-router-dom"
 import ProductPage from "./Pages/ProductPage"
 import Signup from "./Pages/Signup"
 import Login from "./Pages/Login"
@@ -12,104 +12,45 @@ import User from "./Pages/User"
 import Pages from "./Pages/Pages"
 import Categories from "./Pages/Categories"
 import Contact from "./Pages/Contact";
-import LandingPage from "./Pages/LandingPage";
-import LoadingScreen from "./Pages/LoadingScreen";
-
-
+import { useState, useEffect } from "react";
+import Loader from "./component/Loader/loading";
 // import PrivateRoute from "./Route/PrivateRoute";
 
+
+const PageLoader = ()=> {
+  const navigation = useNavigation()
+
+  const isPageLoading = navigation.state === "loading"
+
+  return isPageLoading ? <Loader /> : <Outlet />
+}
 const App = () => {
- const router = createBrowserRouter([
-  
+  const [isLoading, setIsLoading] = useState(true)
 
+  useEffect(()=> {
+    setTimeout(()=> setIsLoading(false), 1000)
+  }, [])
+  const router = createBrowserRouter([
     {
-     path: "",
-     element: <HomeRoute />,
-
-       children: [
-          
-          {
-            path: "/productpage",
-            element:<ProductPage/>
-          },
-
-          {
-            path: "/Home",
-            element:<Home/>
-          },
-
-          {
-            path: "/blog",
-            element:<Blog/>
-          },
-
-          {
-            path: "/pages",
-            element:<Pages/>
-          }, 
-
-          {
-            path: "/user",
-            element:<User/>
-          },
-
-          {
-            path:"/categories",
-            element: <Categories />
-          },
-
-          {
-            path:"/contact",
-            element: <Contact />
-          },
-
-          
-        {
-          path: "/body",
-          element: <Body />
-       },
-
-          {
-            path:"/Cart",
-            element: <Cart />
-          }
-       ]
+      path: "/",
+      element: <HomeRoute />,
+      children: [
+        { path: "productpage", element: <PageLoader />, children: [{ path: "", element: <ProductPage /> }] },
+        { path: "home", element: <PageLoader />, children: [{ path: "", element: <Home /> }] },
+        { path: "blog", element: <PageLoader />, children: [{ path: "", element: <Blog /> }] },
+        { path: "pages", element: <PageLoader />, children: [{ path: "", element: <Pages /> }] },
+        { path: "user", element: <PageLoader />, children: [{ path: "", element: <User /> }] },
+        { path: "categories", element: <PageLoader />, children: [{ path: "", element: <Categories /> }] },
+        { path: "contact", element: <PageLoader />, children: [{ path: "", element: <Contact /> }] },
+        { path: "body", element: <PageLoader />, children: [{ path: "", element: <Body /> }] },
+        { path: "cart", element: <PageLoader />, children: [{ path: "", element: <Cart /> }] },
+      ],
     },
-
-    {
-        path: "/login",
-        element: <Login />
-    },
-
-    {
-        path: "/signup",
-        element: <Signup />
-    },
-
-    {
-      path: "/landinpage",
-      element: <LandingPage />,
-    },
-
-    {
-      path: "/loadingscreen",
-      element: <LoadingScreen />,
-    },
-    // {
-    //   path:"/private",
-    //   element: <PrivateRoute/>,
-    //   children:[
-    //     {
-    //       path: 'Dashboard',
-    //       element: <Dashboard/>
-    //     }
-    //   ]
-    // }
- ])
+    { path: "/login", element: <PageLoader />, children: [{ path: "", element: <Login /> }] },
+    { path: "/signup", element: <PageLoader />, children: [{ path: "", element: <Signup /> }] },
+  ]);
     
-    return (
-       <RouterProvider router={router}/>
-    )
+    return isLoading ? <Loader /> : <RouterProvider router={router}/>
 }
 
 export default App
