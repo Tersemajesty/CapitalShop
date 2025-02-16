@@ -12,10 +12,16 @@ import User from "./Pages/User"
 import Pages from "./Pages/Pages"
 import Categories from "./Pages/Categories"
 import Contact from "./Pages/Contact";
+import LandingPage from "./Pages/LandingPage";
+import LoadingScreen from "./Pages/LoadingScreen";
+
+
 // import PrivateRoute from "./Route/PrivateRoute";
 
 const App = () => {
  const router = createBrowserRouter([
+  
+
     {
      path: "",
      element: <HomeRoute />,
@@ -78,6 +84,16 @@ const App = () => {
     {
         path: "/signup",
         element: <Signup />
+    },
+
+    {
+      path: "/landinpage",
+      element: <LandingPage />,
+    },
+
+    {
+      path: "/loadingscreen",
+      element: <LoadingScreen />,
     },
     // {
     //   path:"/private",
